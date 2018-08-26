@@ -1,8 +1,9 @@
-from gpiozero import LED
-from time import sleep
+from .speech import SpeechModule
 
-led = LED(17)
-led.on()
+output = SpeechModule()
+output.speak("This is a speaking test. How good am I speaking?")
+
+
 
 
 
