@@ -11,13 +11,12 @@ class SpeechModule:
 
         self.lastText = text
 
-        cmd_beg = 'espeak'
-        cmd_end = ' | aplay /home/pi/Desktop/Text.wav 2>/dev/null'
-        cmd_out = '--stdout > /home/pi/Desktop/Text.wav '
+        cmd_beg = 'espeak -s160 '
+        cmd_end = ' 2>/dev/null'
 
         print(text)
 
         text = text.replace(' ', '_')
 
-        call([cmd_beg+cmd_out+text+cmd_end], shell=True)
+        call([cmd_beg+text+cmd_end], shell=True)
 
