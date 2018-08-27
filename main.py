@@ -1,4 +1,4 @@
-from .speech import SpeechModule
+from packages.speech import SpeechModule
 
 output = SpeechModule()
 
