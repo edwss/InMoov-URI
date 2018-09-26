@@ -34,19 +34,20 @@ class Servomotors:
     horizontal_head_MAX_ANGLE = 0
 
     def angleToPulse(self, angle):
-        pulse = (angle - 0) * (servo_max - servo_min) / (180 - 0) + servo_min
+        pulse = (angle - 0) * (self.servo_max - self.servo_min) / (180 - 0) + self.servo_min
         return pulse
 
     def __init__(self):
         super().__init__()
         pwm = Adafruit_PCA9685.PCA9685()
         pwm.set_pwm_freq(60)
-        # self.neutral()
+        self.neutral(pwm)
 
     # Here I'll have to set all servomotors to middle angle.
     # This should be used when starting the InMoov and before turning it off
-    # def neutral(self):
-    #
+    def neutral(self, pwm):
+        pwm.set_pwm(0, 0, self.angleToPulse(100))
+
     # def headUp(self, angle):
     #
     # def headDown(self, angle):
