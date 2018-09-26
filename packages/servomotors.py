@@ -1,4 +1,12 @@
-class ServomotorS:
+from __future__ import division
+import time
+import Adafruit_PCA9685
+
+
+class Servomotors:
+
+    servo_min = 150  # Min pulse length out of 4096
+    servo_max = 600  # Max pulse length out of 4096
 
     mouth_GPIO_PIN = 10
     mouth_MIN_ANGLE = 0
@@ -25,8 +33,14 @@ class ServomotorS:
     horizontal_head_MIDDLE_ANGLE = 0
     horizontal_head_MAX_ANGLE = 0
 
+     def angleToPulse(self, angle):
+         pulse = (angle - 0) * (servo_max - servo_min) / (180 - 0) + servo_min
+         return pulse
+
     def __init__(self):
         super().__init__()
+        pwm = Adafruit_PCA9685.PCA9685()
+        pwm.set_pwm_freq(60)
         self.neutral()
 
     # Here I'll have to set all servomotors to middle angle.
