@@ -49,6 +49,11 @@ class Servomotors:
         pwm.set_pwm_freq(60)
         pwm.set_pwm(0, 0, self.angleToPulse(100))
 
+    def moveTo(self, angle):
+        pwm = Adafruit_PCA9685.PCA9685()
+        pwm.set_pwm_freq(60)
+        pwm.set_pwm(0, 0, self.angleToPulse(angle))
+
     # def headUp(self, angle):
     #
     # def headDown(self, angle):
