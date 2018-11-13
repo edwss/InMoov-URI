@@ -47,11 +47,11 @@ class Servomotors:
     def neutral(self):
         pwm = Adafruit_PCA9685.PCA9685()
         pwm.set_pwm_freq(60)
-        pwm.set_pwm(0, 0, self.angleToPulse(CONSTANTE??)) //Head vertical
-        pwm.set_pwm(0, 0, self.angleToPulse(CONSTANTE??)) //Head horizontal
-        pwm.set_pwm(0, 0, self.angleToPulse(CONSTANTE??)) //Eye vertical
-        pwm.set_pwm(0, 0, self.angleToPulse(CONSTANTE??)) //Eye horizontal
-        pwm.set_pwm(0, 0, self.angleToPulse(CONSTANTE??)) //Mouth
+        pwm.set_pwm(0, 0, self.angleToPulse(CONSTANTE??)) #Head vertical
+        pwm.set_pwm(0, 0, self.angleToPulse(CONSTANTE??)) #Head horizontal
+        pwm.set_pwm(0, 0, self.angleToPulse(CONSTANTE??)) #Eye vertical
+        pwm.set_pwm(0, 0, self.angleToPulse(CONSTANTE??)) #Eye horizontal
+        pwm.set_pwm(0, 0, self.angleToPulse(CONSTANTE??)) #Mouth
 
     def moveTo(self, servomotor, angle):
         pwm = Adafruit_PCA9685.PCA9685()
