@@ -4,7 +4,6 @@
 #
 # output.speak("This is a speaking test. How good am I speaking?")
 
-
 from packages.servomotors import Servomotors
 
 servo = Servomotors()
