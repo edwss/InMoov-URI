@@ -39,7 +39,6 @@ class Servomotors:
 
     def __init__(self):
         super().__init__()
-
         self.neutral()
 
     # All servomotors must be set to middle angle when starting and stopping the application
@@ -61,22 +60,18 @@ class Servomotors:
 #THESE FUNCTIONS NEED A SPEED PARAMETER!!!!!!!!!1
 
     def headUp(self, speed):
-        for angle in range(self.head_vertical_MIDDLE_ANGLE, self.head_vertical_MAX_ANGLE)
+        for angle in range(self.head_vertical_MIDDLE_ANGLE, self.head_vertical_MAX_ANGLE):
             self.moveTo(self.head_vertical_GPIO_PIN, angle)
-            #delay
-
+        #delay
         #self.moveTo(self.head_vertical_GPIO_PIN, self.head_vertical_MAX_ANGLE)
-
 
     def headDown(self, speed):
         self.moveTo(self.head_vertical_GPIO_PIN, self.head_vertical_MIN_ANGLE)
 
-
     def headLeft(self, speed):
         self.moveTo(self.head_horizontal_GPIO_PIN, self.head_horizontal_MAX_ANGLE)
 
-
-    def headRight(self, angle):
+    # def headRight(self, angle):
 
     # def eyesUp(self, angle):
     #
