@@ -108,13 +108,13 @@ class Servomotors:
     def mouthTo(self,speed, angle):
         self.moveTo(self.mouth_GPIO_PIN, angle)
 
-    def headTo2D(self, xCoord, yCoord):
-        self.headHorizontalTo(10, xCoord)
-        self.headVerticalTo(10, yCoord)
+    def headTo2D(self, speed, xCoord, yCoord):
+        self.headHorizontalTo(speed, xCoord)
+        self.headVerticalTo(speed, yCoord)
 
     def eyesTo2D(self, xCoord, yCoord):
-        self.eyeHorizontalTo(10, xCoord)
-        self.eyeVerticalTo(10, yCoord)
+        self.eyeHorizontalTo(speed, xCoord)
+        self.eyeVerticalTo(speed, yCoord)
 
 # ANIMAÇÕES
 
