@@ -1,9 +1,12 @@
 from packages.servomotors import Servomotors
-
+import time
 servo = Servomotors()
 print(servo.angleToPulse(90))
 servo.neutral()
-servo.headDown(10)
+servo.headUp(0.5)
+
+
+
 # while True:
 #     x = int(input("Type the desired angle or -1 to close: "))
 #     s = int(input("Type the servomotor from 0 to 4 or -1 to close: "))

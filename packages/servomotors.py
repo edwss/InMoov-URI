@@ -61,10 +61,10 @@ class Servomotors:
     # THESE FUNCTIONS NEED A SPEED PARAMETER!!!!!!!!!1
 
     def headUp(self, speed):
-        self.moveTo(self.head_vertical_GPIO_PIN, self.head_vertical_MAX_ANGLE)
-        # for angle in range(self.head_vertical_MIDDLE_ANGLE, self.head_vertical_MAX_ANGLE):
-        #    self.moveTo(self.head_vertical_GPIO_PIN, angle)
-        # delay
+        # self.moveTo(self.head_vertical_GPIO_PIN, self.head_vertical_MAX_ANGLE)
+        for angle in range(self.head_vertical_MIDDLE_ANGLE, self.head_vertical_MAX_ANGLE):
+            self.moveTo(self.head_vertical_GPIO_PIN, angle)
+            time.sleep(float(speed))
 
     def headDown(self, speed):
         self.moveTo(self.head_vertical_GPIO_PIN, self.head_vertical_MIN_ANGLE)
