@@ -2,8 +2,8 @@ from __future__ import division
 import time
 import Adafruit_PCA9685
 
-
 # from time import sleep
+
 
 class Servomotors:
     servo_min = 150  # Min pulse length out of 4096
@@ -68,13 +68,34 @@ class Servomotors:
         pwm.set_pwm(self.mouth_GPIO_PIN, 0, self.angleToPulse(self.mouth_MIDDLE_ANGLE))  # Mouth
         self.mouth_lastPosition = self.mouth_MIDDLE_ANGLE
 
-
     def moveTo(self, servomotor, angle):
         pwm = Adafruit_PCA9685.PCA9685()
         pwm.set_pwm_freq(60)
-        pwm.set_pwm(servomotor, 0, self.angleToPulse(angle))
 
-    # THESE FUNCTIONS NEED A SPEED PARAMETER!!!!!!!!!1
+        try:
+            if servomotor == self.mouth_GPIO_PIN:
+                if angle < self.mouth_MIN_ANGLE | angle > self.mouth_MAX_ANGLE:
+                    raise Exception("The given angle value is lesser or bigger than servo capabilities!")
+            elif servomotor == self.head_horizontal_GPIO_PIN:
+                if angle < self.head_horizontal_MIN_ANGLE | angle > self.head_horizontal_MAX_ANGLE:
+                    raise Exception("The given angle value is lesser or bigger than servo capabilities!")
+            elif servomotor == self.head_vertical_GPIO_PIN:
+                if angle < self.head_vertical_MIN_ANGLE | angle > self.head_vertical_MAX_ANGLE:
+                    raise Exception("The given angle value is lesser or bigger than servo capabilities!")
+            elif servomotor == self.eye_horizontal_GPIO_PIN:
+                if angle < self.eye_horizontal_MIN_ANGLE | angle > self.eye_horizontal_MAX_ANGLE:
+                    raise Exception("The given angle value is lesser or bigger than servo capabilities!")
+            elif servomotor == self.eye_vertical_GPIO_PIN:
+                if angle < self.eye_vertical_MIN_ANGLE | angle > self.eye_vertical_MAX_ANGLE:
+                    raise Exception("The given angle value is lesser or bigger than servo capabilities!")
+            else:
+                raise Exception("The given servomotor is invalid!")
+
+            pwm.set_pwm(servomotor, 0, self.angleToPulse(angle))
+
+        except:
+            print("Error while trying to move the servomotor!")
+
 
     def headUp(self, speed):
         # self.moveTo(self.head_vertical_GPIO_PIN, self.head_vertical_MAX_ANGLE)
