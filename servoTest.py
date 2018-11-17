@@ -2,8 +2,9 @@ from packages.servomotors import Servomotors
 
 #import time
 servo = Servomotors()
-print("Ok")
+print("Ok...trying head up...")
 servo.headUp(0.005)
+print("Ok...trying head down...")
 servo.headDown(0.005)
 print("End of the test! Success!")
 
