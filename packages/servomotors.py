@@ -80,54 +80,71 @@ class Servomotors:
         self.moveTo(self.eye_vertical_GPIO_PIN, self.eye_vertical_MIDDLE_ANGLE)
         self.moveTo(self.mouth_GPIO_PIN, self.mouth_MIDDLE_ANGLE)
 
-    def moveTo(self, servomotor, angle):
+    def moveTo(self, servomotor, angle, speed):
         pwm = Adafruit_PCA9685.PCA9685()
         pwm.set_pwm_freq(60)
 
-        try:
-            if servomotor == self.mouth_GPIO_PIN:
-                if angle < self.mouth_MIN_ANGLE | angle > self.mouth_MAX_ANGLE:
-                    raise Exception("The given angle value is lesser or bigger than servo capabilities!")
-            elif servomotor == self.head_horizontal_GPIO_PIN:
-                if angle < self.head_horizontal_MIN_ANGLE | angle > self.head_horizontal_MAX_ANGLE:
-                    raise Exception("The given angle value is lesser or bigger than servo capabilities!")
-            elif servomotor == self.head_vertical_GPIO_PIN:
-                if angle < self.head_vertical_MIN_ANGLE | angle > self.head_vertical_MAX_ANGLE:
-                    raise Exception("The given angle value is lesser or bigger than servo capabilities!")
-            elif servomotor == self.eye_horizontal_GPIO_PIN:
-                if angle < self.eye_horizontal_MIN_ANGLE | angle > self.eye_horizontal_MAX_ANGLE:
-                    raise Exception("The given angle value is lesser or bigger than servo capabilities!")
-            elif servomotor == self.eye_vertical_GPIO_PIN:
-                if angle < self.eye_vertical_MIN_ANGLE | angle > self.eye_vertical_MAX_ANGLE:
-                    raise Exception("The given angle value is lesser or bigger than servo capabilities!")
+        if servomotor == self.mouth_GPIO_PIN:
+            if angle < self.mouth_MIN_ANGLE | angle > self.mouth_MAX_ANGLE:
+                raise Exception("The given angle value is lesser or bigger than servo capabilities!")
+            print("Moving mouth to: ", angle)
+            for x in range(self.mouth_lastPosition, angle):
+                pwm.set_pwm(self.mouth_GPIO_PIN, 0, self.angleToPulse(x))
+                self.mouth_lastPosition = x
+                time.sleep(speed)
 
-            else:
-                raise Exception("The given servomotor is invalid!")
+        elif servomotor == self.head_horizontal_GPIO_PIN:
+            if angle < self.head_horizontal_MIN_ANGLE | angle > self.head_horizontal_MAX_ANGLE:
+                raise Exception("The given angle value is lesser or bigger than servo capabilities!")
+            print("Moving head horizontal to: ", angle)
+            for x in range(self.head_horizontal_lastPosition, angle):
+                pwm.set_pwm(self.head_horizontal_GPIO_PIN, 0, self.angleToPulse(x))
+                self.head_horizontal_lastPosition = x
+                time.sleep(speed)
 
-            # pwm.set_pwm(servomotor, 0, self.angleToPulse(angle))
-            for angle in range(self.head_vertical_lastPosition, self.head_vertical_MAX_ANGLE):
-                self.moveTo(self.head_vertical_GPIO_PIN, angle)
-                self.head_vertical_lastPosition = angle
-                time.sleep(float(speed))
+        elif servomotor == self.head_vertical_GPIO_PIN:
+            if angle < self.head_vertical_MIN_ANGLE | angle > self.head_vertical_MAX_ANGLE:
+                raise Exception("The given angle value is lesser or bigger than servo capabilities!")
+            print("Moving head vertical to: ", angle)
+            for x in range(self.head_vertical_GPIO_PIN, angle):
+                pwm.set_pwm(self.head_vertical_GPIO_PIN, 0, self.angleToPulse(x))
+                self.head_vertical_lastPosition = x
+                time.sleep(speed)
 
+        elif servomotor == self.eye_horizontal_GPIO_PIN:
+            if angle < self.eye_horizontal_MIN_ANGLE | angle > self.eye_horizontal_MAX_ANGLE:
+                raise Exception("The given angle value is lesser or bigger than servo capabilities!")
+            print("Moving eye horizontal to: ", angle)
+            for x in range(self.eye_horizontal_lastPosition, angle):
+                pwm.set_pwm(self.eye_horizontal_GPIO_PIN, 0, self.angleToPulse(x))
+                self.eye_horizontal_lastPosition = x
+                time.sleep(speed)
 
-        except:
-            print("Error while trying to move the servomotor!")
+        elif servomotor == self.eye_vertical_GPIO_PIN:
+            if angle < self.eye_vertical_MIN_ANGLE | angle > self.eye_vertical_MAX_ANGLE:
+                raise Exception("The given angle value is lesser or bigger than servo capabilities!")
+            print("Moving eye vertical to: ", angle)
+            for x in range(self.eye_vertical_lastPosition, angle):
+                pwm.set_pwm(self.eye_vertical_GPIO_PIN, 0, self.angleToPulse(x))
+                self.eye_vertical_lastPosition = x
+                time.sleep(speed)
 
+        else:
+            raise Exception("The given servomotor is invalid!")
+
+        # pwm.set_pwm(servomotor, 0, self.angleToPulse(angle))
 
     def headUp(self, speed):
         # self.moveTo(self.head_vertical_GPIO_PIN, self.head_vertical_MAX_ANGLE)
-        for angle in range(self.head_vertical_lastPosition, self.head_vertical_MAX_ANGLE):
-            self.moveTo(self.head_vertical_GPIO_PIN, angle)
-            self.head_vertical_lastPosition = angle
-            time.sleep(float(speed))
+        print("Moving head up...")
+        self.moveTo(self.head_vertical_GPIO_PIN, self.head_vertical_MAX_ANGLE, speed)
+        print("Head up!")
 
     def headDown(self, speed):
         # self.moveTo(self.head_vertical_GPIO_PIN, self.head_vertical_MIN_ANGLE)
-        for angle in range(self.head_vertical_lastPosition, self.head_vertical_MIN_ANGLE):
-            self.moveTo(self.head_vertical_GPIO_PIN, angle)
-            self.head_vertical_lastPosition = angle
-            time.sleep(float(speed))
+        print("Moving head down...")
+        self.moveTo(self.head_vertical_GPIO_PIN, self.head_vertical_MIN_ANGLE, speed)
+        print("Head down!")
 
     def headLeft(self, speed):
         # self.moveTo(self.head_horizontal_GPIO_PIN, self.head_horizontal_MAX_ANGLE)
