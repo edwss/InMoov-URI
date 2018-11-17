@@ -45,28 +45,36 @@ class Servomotors:
 
     def __init__(self):
         super().__init__()
-        self.neutral()
-
-    # All servomotors must be set to middle angle when starting and stopping the application
-    # This should be used when starting the InMoov-URI and before turning it off
-    def neutral(self):
         pwm = Adafruit_PCA9685.PCA9685()
         pwm.set_pwm_freq(60)
 
         pwm.set_pwm(self.head_vertical_GPIO_PIN, 0, self.angleToPulse(self.head_vertical_MIDDLE_ANGLE))  # Head vertical
         self.head_vertical_lastPosition = self.head_vertical_MIDDLE_ANGLE
 
-        pwm.set_pwm(self.head_horizontal_GPIO_PIN, 0, self.angleToPulse(self.head_horizontal_MIDDLE_ANGLE))  # Head horizontal
+        pwm.set_pwm(self.head_horizontal_GPIO_PIN, 0,
+                    self.angleToPulse(self.head_horizontal_MIDDLE_ANGLE))  # Head horizontal
         self.head_horizontal_lastPosition = self.head_horizontal_MIDDLE_ANGLE
 
         pwm.set_pwm(self.eye_vertical_GPIO_PIN, 0, self.angleToPulse(self.eye_vertical_MIDDLE_ANGLE))  # Eye vertical
         self.eye_vertical_lastPosition = self.eye_vertical_MIDDLE_ANGLE
 
-        pwm.set_pwm(self.eye_horizontal_GPIO_PIN, 0, self.angleToPulse(self.eye_horizontal_MIDDLE_ANGLE))  # Eye horizontal
+        pwm.set_pwm(self.eye_horizontal_GPIO_PIN, 0,
+                    self.angleToPulse(self.eye_horizontal_MIDDLE_ANGLE))  # Eye horizontal
         self.eye_horizontal_lastPosition = self.eye_horizontal_MIDDLE_ANGLE
 
         pwm.set_pwm(self.mouth_GPIO_PIN, 0, self.angleToPulse(self.mouth_MIDDLE_ANGLE))  # Mouth
         self.mouth_lastPosition = self.mouth_MIDDLE_ANGLE
+
+        self.neutral()
+
+    # All servomotors must be set to middle angle when starting and stopping the application
+    # This should be used when starting the InMoov-URI and before turning it off
+    def neutral(self):
+        self.moveTo(self.head_horizontal_GPIO_PIN, self.head_horizontal_MIDDLE_ANGLE)
+        self.moveTo(self.head_vertical_GPIO_PIN, self.head_vertical_MIDDLE_ANGLE)
+        self.moveTo(self.eye_horizontal_GPIO_PIN, self.eye_horizontal_MIDDLE_ANGLE)
+        self.moveTo(self.eye_horizontal_GPIO_PIN, self.eye_horizontal_MIDDLE_ANGLE)
+        self.moveTo(self.mouth_GPIO_PIN, self.mouth_MIDDLE_ANGLE)
 
     def moveTo(self, servomotor, angle):
         pwm = Adafruit_PCA9685.PCA9685()
@@ -88,10 +96,16 @@ class Servomotors:
             elif servomotor == self.eye_vertical_GPIO_PIN:
                 if angle < self.eye_vertical_MIN_ANGLE | angle > self.eye_vertical_MAX_ANGLE:
                     raise Exception("The given angle value is lesser or bigger than servo capabilities!")
+
             else:
                 raise Exception("The given servomotor is invalid!")
 
-            pwm.set_pwm(servomotor, 0, self.angleToPulse(angle))
+            # pwm.set_pwm(servomotor, 0, self.angleToPulse(angle))
+            for angle in range(self.head_vertical_lastPosition, self.head_vertical_MAX_ANGLE):
+                self.moveTo(self.head_vertical_GPIO_PIN, angle)
+                self.head_vertical_lastPosition = angle
+                time.sleep(float(speed))
+
 
         except:
             print("Error while trying to move the servomotor!")
