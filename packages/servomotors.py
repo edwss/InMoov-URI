@@ -45,27 +45,31 @@ class Servomotors:
 
     def __init__(self):
         super().__init__()
+        print("initialising object")
         pwm = Adafruit_PCA9685.PCA9685()
         pwm.set_pwm_freq(60)
 
         pwm.set_pwm(self.head_vertical_GPIO_PIN, 0, self.angleToPulse(self.head_vertical_MIDDLE_ANGLE))  # Head vertical
         self.head_vertical_lastPosition = self.head_vertical_MIDDLE_ANGLE
+        print("Head vertical set to middle!")
 
-        pwm.set_pwm(self.head_horizontal_GPIO_PIN, 0,
-                    self.angleToPulse(self.head_horizontal_MIDDLE_ANGLE))  # Head horizontal
+        pwm.set_pwm(self.head_horizontal_GPIO_PIN, 0, self.angleToPulse(self.head_horizontal_MIDDLE_ANGLE))  # Head horizontal
         self.head_horizontal_lastPosition = self.head_horizontal_MIDDLE_ANGLE
+        print("Head horizontal set to middle!")
 
         pwm.set_pwm(self.eye_vertical_GPIO_PIN, 0, self.angleToPulse(self.eye_vertical_MIDDLE_ANGLE))  # Eye vertical
         self.eye_vertical_lastPosition = self.eye_vertical_MIDDLE_ANGLE
+        print("Eye vertical set to middle!")
 
-        pwm.set_pwm(self.eye_horizontal_GPIO_PIN, 0,
-                    self.angleToPulse(self.eye_horizontal_MIDDLE_ANGLE))  # Eye horizontal
+        pwm.set_pwm(self.eye_horizontal_GPIO_PIN, 0, self.angleToPulse(self.eye_horizontal_MIDDLE_ANGLE))  # Eye horizontal
         self.eye_horizontal_lastPosition = self.eye_horizontal_MIDDLE_ANGLE
+        print("Eye horizontal set to middle!")
 
         pwm.set_pwm(self.mouth_GPIO_PIN, 0, self.angleToPulse(self.mouth_MIDDLE_ANGLE))  # Mouth
         self.mouth_lastPosition = self.mouth_MIDDLE_ANGLE
+        print("Mouth set to middle!")
 
-        self.neutral()
+        print("End initialising!")
 
     # All servomotors must be set to middle angle when starting and stopping the application
     # This should be used when starting the InMoov-URI and before turning it off
@@ -73,7 +77,7 @@ class Servomotors:
         self.moveTo(self.head_horizontal_GPIO_PIN, self.head_horizontal_MIDDLE_ANGLE)
         self.moveTo(self.head_vertical_GPIO_PIN, self.head_vertical_MIDDLE_ANGLE)
         self.moveTo(self.eye_horizontal_GPIO_PIN, self.eye_horizontal_MIDDLE_ANGLE)
-        self.moveTo(self.eye_horizontal_GPIO_PIN, self.eye_horizontal_MIDDLE_ANGLE)
+        self.moveTo(self.eye_vertical_GPIO_PIN, self.eye_vertical_MIDDLE_ANGLE)
         self.moveTo(self.mouth_GPIO_PIN, self.mouth_MIDDLE_ANGLE)
 
     def moveTo(self, servomotor, angle):

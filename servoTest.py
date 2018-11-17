@@ -1,9 +1,8 @@
 from packages.servomotors import Servomotors
-import time
+
+#import time
 servo = Servomotors()
-print(servo.angleToPulse(90))
-servo.neutral()
-servo.headUp(0.5)
+print("Ok")
 
 
 
