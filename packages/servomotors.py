@@ -108,11 +108,19 @@ class Servomotors:
                 raise Exception("The given angle value is lesser or bigger than servo capabilities!")
             print("Last Position: ", self.head_vertical_lastPosition)
             print("Moving head vertical to: ", angle)
-            for x in range(self.head_vertical_lastPosition, angle):
-                print("Angle now: ", x)
-                pwm.set_pwm(self.head_vertical_GPIO_PIN, 0, self.angleToPulse(x))
-                self.head_vertical_lastPosition = x
-                time.sleep(speed)
+
+            if self.head_vertical_lastPosition > angle:
+                for x in range(self.head_vertical_lastPosition, angle, -1):
+                    print("Angle now: ", x)
+                    pwm.set_pwm(self.head_vertical_GPIO_PIN, 0, self.angleToPulse(x))
+                    self.head_vertical_lastPosition = x
+                    time.sleep(speed)
+            else:
+                for x in range(self.head_vertical_lastPosition, angle):
+                    print("Angle now: ", x)
+                    pwm.set_pwm(self.head_vertical_GPIO_PIN, 0, self.angleToPulse(x))
+                    self.head_vertical_lastPosition = x
+                    time.sleep(speed)
 
         elif servomotor == self.eye_horizontal_GPIO_PIN:
             if angle < self.eye_horizontal_MIN_ANGLE or angle > self.eye_horizontal_MAX_ANGLE:
