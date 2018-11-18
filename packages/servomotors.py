@@ -73,12 +73,12 @@ class Servomotors:
 
     # All servomotors must be set to middle angle when starting and stopping the application
     # This should be used when starting the InMoov-URI and before turning it off
-    def neutral(self):
-        self.moveTo(self.head_horizontal_GPIO_PIN, self.head_horizontal_MIDDLE_ANGLE, 0.005)
-        self.moveTo(self.head_vertical_GPIO_PIN, self.head_vertical_MIDDLE_ANGLE, 0.005)
-        self.moveTo(self.eye_horizontal_GPIO_PIN, self.eye_horizontal_MIDDLE_ANGLE, 0.005)
-        self.moveTo(self.eye_vertical_GPIO_PIN, self.eye_vertical_MIDDLE_ANGLE, 0.005)
-        self.moveTo(self.mouth_GPIO_PIN, self.mouth_MIDDLE_ANGLE, 0.005)
+    def neutral(self, speed):
+        self.moveTo(self.head_horizontal_GPIO_PIN, self.head_horizontal_MIDDLE_ANGLE, speed)
+        self.moveTo(self.head_vertical_GPIO_PIN, self.head_vertical_MIDDLE_ANGLE, speed)
+        self.moveTo(self.eye_horizontal_GPIO_PIN, self.eye_horizontal_MIDDLE_ANGLE, speed)
+        self.moveTo(self.eye_vertical_GPIO_PIN, self.eye_vertical_MIDDLE_ANGLE, speed)
+        self.moveTo(self.mouth_GPIO_PIN, self.mouth_MIDDLE_ANGLE, speed)
 
     def moveTo(self, servomotor, angle, speed):
         pwm = Adafruit_PCA9685.PCA9685()
@@ -94,13 +94,24 @@ class Servomotors:
                 time.sleep(speed)
 
         elif servomotor == self.head_horizontal_GPIO_PIN:
+            print("Angle: ", angle, "Min: ", self.head_horizontal_MIN_ANGLE, " Max: ", self.head_horizontal_MAX_ANGLE)
             if angle < self.head_horizontal_MIN_ANGLE or angle > self.head_horizontal_MAX_ANGLE:
                 raise Exception("The given angle value is lesser or bigger than servo capabilities!")
+            print("Last Position: ", self.head_horizontal_lastPosition)
             print("Moving head horizontal to: ", angle)
-            for x in range(self.head_horizontal_lastPosition, angle):
-                pwm.set_pwm(self.head_horizontal_GPIO_PIN, 0, self.angleToPulse(x))
-                self.head_horizontal_lastPosition = x
-                time.sleep(speed)
+
+            if self.head_horizontal_lastPosition > angle:
+                for x in range(self.head_horizontal_lastPosition, angle, -1):
+                    print("Angle now: ", x)
+                    pwm.set_pwm(self.head_horizontal_GPIO_PIN, 0, self.angleToPulse(x))
+                    self.head_horizontal_lastPosition = x
+                    time.sleep(speed)
+            else:
+                for x in range(self.head_horizontal_lastPosition, angle):
+                    print("Angle now: ", x)
+                    pwm.set_pwm(self.head_horizontal_GPIO_PIN, 0, self.angleToPulse(x))
+                    self.head_horizontal_lastPosition = x
+                    time.sleep(speed)
 
         elif servomotor == self.head_vertical_GPIO_PIN:
             print("Angle: ", angle, "Min: ", self.head_vertical_MIN_ANGLE, " Max: ", self.head_vertical_MAX_ANGLE)
@@ -159,17 +170,15 @@ class Servomotors:
 
     def headLeft(self, speed):
         # self.moveTo(self.head_horizontal_GPIO_PIN, self.head_horizontal_MAX_ANGLE)
-        for angle in range(self.head_horizontal_lastPosition, self.head_horizontal_MAX_ANGLE):
-            self.moveTo(self.head_horizontal_GPIO_PIN, angle)
-            self.head_horizontal_lastPosition = angle
-            time.sleep(float(speed))
+        print("Moving head left...")
+        self.moveTo(self.head_horizontal_GPIO_PIN, self.head_horizontal_MAX_ANGLE, speed)
+        print("Head left!")
 
     def headRight(self, speed):
         # self.moveTo(self.head_horizontal_GPIO_PIN, self.head_horizontal_MIN_ANGLE)
-        for angle in range(self.head_horizontal_lastPosition, self.head_horizontal_MIN_ANGLE):
-            self.moveTo(self.head_horizontal_GPIO_PIN, angle)
-            self.head_horizontal_lastPosition = angle
-            time.sleep(float(speed))
+        print("Moving head right...")
+        self.moveTo(self.head_horizontal_GPIO_PIN, self.head_horizontal_MIN_ANGLE, speed)
+        print("Head right!")
 
     def eyesUp(self, speed):
         # self.moveTo(self.eye_vertical_GPIO_PIN, self.eye_vertical_MIN_ANGLE)
