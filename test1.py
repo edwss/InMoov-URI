@@ -25,3 +25,6 @@ servo.neutral()
 time.sleep(2)
 
 
+# Always set the InMoov to the neutral position before ending your program!
+servo.neutral(0.05)
+

@@ -81,17 +81,29 @@ class Servomotors:
         self.moveTo(self.mouth_GPIO_PIN, self.mouth_MIDDLE_ANGLE, speed)
 
     def moveTo(self, servomotor, angle, speed):
+
         pwm = Adafruit_PCA9685.PCA9685()
         pwm.set_pwm_freq(60)
 
         if servomotor == self.mouth_GPIO_PIN:
+            print("Angle: ", angle, "Min: ", self.mouth_MIN_ANGLE, " Max: ", self.mouth_MAX_ANGLE)
             if angle < self.mouth_MIN_ANGLE or angle > self.mouth_MAX_ANGLE:
                 raise Exception("The given angle value is lesser or bigger than servo capabilities!")
+            print("Last Position: ", self.mouth_lastPosition)
             print("Moving mouth to: ", angle)
-            for x in range(self.mouth_lastPosition, angle):
-                pwm.set_pwm(self.mouth_GPIO_PIN, 0, self.angleToPulse(x))
-                self.mouth_lastPosition = x
-                time.sleep(speed)
+
+            if self.mouth_lastPosition > angle:
+                for x in range(self.mouth_lastPosition, angle, -1):
+                    print("Angle now: ", x)
+                    pwm.set_pwm(self.mouth_GPIO_PIN, 0, self.angleToPulse(x))
+                    self.mouth_lastPosition = x
+                    time.sleep(speed)
+            else:
+                for x in range(self.mouth_lastPosition, angle):
+                    print("Angle now: ", x)
+                    pwm.set_pwm(self.mouth_GPIO_PIN, 0, self.angleToPulse(x))
+                    self.mouth_lastPosition = x
+                    time.sleep(speed)
 
         elif servomotor == self.head_horizontal_GPIO_PIN:
             print("Angle: ", angle, "Min: ", self.head_horizontal_MIN_ANGLE, " Max: ", self.head_horizontal_MAX_ANGLE)
@@ -134,22 +146,44 @@ class Servomotors:
                     time.sleep(speed)
 
         elif servomotor == self.eye_horizontal_GPIO_PIN:
+            print("Angle: ", angle, "Min: ", self.eye_horizontal_MIN_ANGLE, " Max: ", self.eye_horizontal_MAX_ANGLE)
             if angle < self.eye_horizontal_MIN_ANGLE or angle > self.eye_horizontal_MAX_ANGLE:
                 raise Exception("The given angle value is lesser or bigger than servo capabilities!")
+            print("Last Position: ", self.eye_horizontal_lastPosition)
             print("Moving eye horizontal to: ", angle)
-            for x in range(self.eye_horizontal_lastPosition, angle):
-                pwm.set_pwm(self.eye_horizontal_GPIO_PIN, 0, self.angleToPulse(x))
-                self.eye_horizontal_lastPosition = x
-                time.sleep(speed)
+
+            if self.eye_horizontal_lastPosition > angle:
+                for x in range(self.eye_horizontal_lastPosition, angle, -1):
+                    print("Angle now: ", x)
+                    pwm.set_pwm(self.eye_horizontal_GPIO_PIN, 0, self.angleToPulse(x))
+                    self.eye_horizontal_lastPosition = x
+                    time.sleep(speed)
+            else:
+                for x in range(self.eye_horizontal_lastPosition, angle):
+                    print("Angle now: ", x)
+                    pwm.set_pwm(self.eye_horizontal_GPIO_PIN, 0, self.angleToPulse(x))
+                    self.eye_horizontal_lastPosition = x
+                    time.sleep(speed)
 
         elif servomotor == self.eye_vertical_GPIO_PIN:
+            print("Angle: ", angle, "Min: ", self.eye_vertical_MIN_ANGLE, " Max: ", self.eye_vertical_MAX_ANGLE)
             if angle < self.eye_vertical_MIN_ANGLE or angle > self.eye_vertical_MAX_ANGLE:
                 raise Exception("The given angle value is lesser or bigger than servo capabilities!")
+            print("Last Position: ", self.eye_vertical_lastPosition)
             print("Moving eye vertical to: ", angle)
-            for x in range(self.eye_vertical_lastPosition, angle):
-                pwm.set_pwm(self.eye_vertical_GPIO_PIN, 0, self.angleToPulse(x))
-                self.eye_vertical_lastPosition = x
-                time.sleep(speed)
+
+            if self.eye_vertical_lastPosition > angle:
+                for x in range(self.eye_vertical_lastPosition, angle, -1):
+                    print("Angle now: ", x)
+                    pwm.set_pwm(self.eye_vertical_GPIO_PIN, 0, self.angleToPulse(x))
+                    self.eye_vertical_lastPosition = x
+                    time.sleep(speed)
+            else:
+                for x in range(self.eye_vertical_lastPosition, angle):
+                    print("Angle now: ", x)
+                    pwm.set_pwm(self.eye_vertical_GPIO_PIN, 0, self.angleToPulse(x))
+                    self.eye_vertical_lastPosition = x
+                    time.sleep(speed)
 
         else:
             raise Exception("The given servomotor is invalid!")
@@ -158,97 +192,59 @@ class Servomotors:
 
     def headUp(self, speed):
         # self.moveTo(self.head_vertical_GPIO_PIN, self.head_vertical_MAX_ANGLE)
-        print("Moving head up...")
         self.moveTo(self.head_vertical_GPIO_PIN, self.head_vertical_MAX_ANGLE, speed)
-        print("Head up!")
 
     def headDown(self, speed):
         # self.moveTo(self.head_vertical_GPIO_PIN, self.head_vertical_MIN_ANGLE)
-        print("Moving head down...")
         self.moveTo(self.head_vertical_GPIO_PIN, self.head_vertical_MIN_ANGLE, speed)
-        print("Head down!")
 
     def headLeft(self, speed):
         # self.moveTo(self.head_horizontal_GPIO_PIN, self.head_horizontal_MAX_ANGLE)
-        print("Moving head left...")
         self.moveTo(self.head_horizontal_GPIO_PIN, self.head_horizontal_MAX_ANGLE, speed)
-        print("Head left!")
 
     def headRight(self, speed):
         # self.moveTo(self.head_horizontal_GPIO_PIN, self.head_horizontal_MIN_ANGLE)
-        print("Moving head right...")
         self.moveTo(self.head_horizontal_GPIO_PIN, self.head_horizontal_MIN_ANGLE, speed)
-        print("Head right!")
 
     def eyesUp(self, speed):
         # self.moveTo(self.eye_vertical_GPIO_PIN, self.eye_vertical_MIN_ANGLE)
-        for angle in range(self.eye_vertical_lastPosition, self.eye_vertical_MIN_ANGLE):
-            self.moveTo(self.eye_vertical_GPIO_PIN, angle)
-            self.eye_vertical_lastPosition = angle
-            time.sleep(float(speed))
+        self.moveTo(self.eye_vertical_GPIO_PIN, self.eye_vertical_MIN_ANGLE, speed)
 
     def eyesDown(self, speed):
-        # self.moveTo(self.eye_vertical_GPIO_PIN, self.head_vertical_MAX_ANGLE)
-        for angle in range(self.eye_vertical_lastPosition, self.eye_vertical_MAX_ANGLE):
-            self.moveTo(self.eye_vertical_GPIO_PIN, angle)
-            self.eye_vertical_lastPosition = angle
-            time.sleep(float(speed))
+        # self.moveTo(self.eye_vertical_GPIO_PIN, self.eye_vertical_MAX_ANGLE)
+        self.moveTo(self.eye_vertical_GPIO_PIN, self.eye_vertical_MAX_ANGLE, speed)
 
     def eyesLeft(self, speed):
         # self.moveTo(self.eye_horizontal_GPIO_PIN, self.eye_horizontal_MAX_ANGLE)
-        for angle in range(self.eye_horizontal_lastPosition, self.eye_horizontal_MAX_ANGLE):
-            self.moveTo(self.eye_horizontal_GPIO_PIN, angle)
-            self.eye_horizontal_lastPosition = angle
-            time.sleep(float(speed))
+        self.moveTo(self.eye_horizontal_GPIO_PIN, self.eye_horizontal_MAX_ANGLE, speed)
 
     def eyesRight(self, speed):
         # self.moveTo(self.eye_horizontal_GPIO_PIN, self.eye_horizontal_MIN_ANGLE)
-        for angle in range(self.eye_horizontal_lastPosition, self.eye_horizontal_MIN_ANGLE):
-            self.moveTo(self.eye_horizontal_GPIO_PIN, angle)
-            self.eye_horizontal_lastPosition = angle
-            time.sleep(float(speed))
+        self.moveTo(self.eye_horizontal_GPIO_PIN, self.eye_horizontal_MIN_ANGLE, speed)
 
     def mouthClose(self, speed):
         # self.moveTo(self.mouth_GPIO_PIN, self.mouth_MIN_ANGLE)
-        for angle in range(self.mouth_lastPosition, self.mouth_MIN_ANGLE):
-            self.moveTo(self.mouth_GPIO_PIN, angle)
-            self.mouth_lastPosition = angle
-            time.sleep(float(speed))
+        self.moveTo(self.mouth_GPIO_PIN, self.mouth_MIN_ANGLE, speed)
 
     def mouthOpen(self, speed):
         # self.moveTo(self.mouth_GPIO_PIN, self.mouth_MAX_ANGLE)
-        for angle in range(self.mouth_lastPosition, self.mouth_MAX_ANGLE):
-            self.moveTo(self.mouth_GPIO_PIN, angle)
-            self.mouth_lastPosition = angle
-            time.sleep(float(speed))
+        self.moveTo(self.mouth_GPIO_PIN, self.mouth_MAX_ANGLE, speed)
 
     def headHorizontalTo(self, speed, angleTo):
         # self.moveTo(self.head_horizontal_GPIO_PIN, angle)
-        for angle in range(self.head_horizontal_lastPosition, angleTo):
-            self.moveTo(self.head_horizontal_GPIO_PIN, angle)
-            self.head_horizontal_lastPosition = angle
-            time.sleep(float(speed))
+        self.moveTo(self.head_horizontal_GPIO_PIN, angleTo, speed)
 
     def headVerticalTo(self, speed, angleTo):
         # self.moveTo(self.head_vertical_GPIO_PIN, angle)
-        for angle in range(self.head_vertical_lastPosition, angleTo):
-            self.moveTo(self.head_vertical_GPIO_PIN, angle)
-            self.head_vertical_lastPosition = angle
-            time.sleep(float(speed))
+        self.moveTo(self.head_vertical_GPIO_PIN, angleTo, speed)
 
     def eyeHorizontalTo(self, speed, angleTo):
         # self.moveTo(self.eye_horizontal_GPIO_PIN, angle)
-        for angle in range(self.eye_horizontal_lastPosition, angleTo):
-            self.moveTo(self.eye_horizontal_GPIO_PIN, angle)
-            self.eye_horizontal_lastPosition = angle
-            time.sleep(float(speed))
+        self.moveTo(self.eye_horizontal_GPIO_PIN, angleTo, speed)
 
     def eyeVerticalTo(self, speed, angleTo):
         # self.moveTo(self.eye_vertical_GPIO_PIN, angle)
-        for angle in range(self.eye_vertical_lastPosition, angleTo):
-            self.moveTo(self.eye_vertical_GPIO_PIN, angle)
-            self.eye_vertical_lastPosition = angle
-            time.sleep(float(speed))
+        self.moveTo(self.eye_vertical_GPIO_PIN, angleTo, speed)
 
     def mouthTo(self,speed, angleTo):
         # self.moveTo(self.mouth_GPIO_PIN, angle)
