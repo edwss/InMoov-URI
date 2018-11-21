@@ -1,29 +1,11 @@
 from packages.servomotors import Servomotors
-import time
 
 servo = Servomotors()
-time.sleep(2)
 
-servo.headUp(0.5)
-time.sleep(2)
-servo.neutral()
-time.sleep(2)
-
-servo.headDown(0.5)
-time.sleep(2)
-servo.neutral()
-time.sleep(2)
-
-servo.headRight(0.5)
-time.sleep(2)
-servo.neutral()
-time.sleep(2)
-
-servo.headLeft(0.5)
-time.sleep(2)
-servo.neutral()
-time.sleep(2)
-
+servo.mouthClose(0.05)
+servo.mouthOpen(0.02)
+servo.moveTo(servo.mouth_GPIO_PIN, servo.mouth_MIDDLE_ANGLE, 0.1)
+servo.mouthClose(0.05)
 
 # Always set the InMoov to the neutral position before ending your program!
 servo.neutral(0.05)

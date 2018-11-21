@@ -2,8 +2,6 @@ from __future__ import division
 import time
 import Adafruit_PCA9685
 
-# from time import sleep
-
 
 class Servomotors:
     servo_min = 150  # Min pulse length out of 4096
