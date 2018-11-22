@@ -244,7 +244,7 @@ class Servomotors:
         # self.moveTo(self.eye_vertical_GPIO_PIN, angle)
         self.moveTo(self.eye_vertical_GPIO_PIN, angleTo, speed)
 
-    def mouthTo(self,speed, angleTo):
+    def mouthTo(self, speed, angleTo):
         # self.moveTo(self.mouth_GPIO_PIN, angle)
         for angle in range(self.mouth_lastPosition, angleTo):
             self.moveTo(self.mouth_GPIO_PIN, angle)
@@ -259,12 +259,20 @@ class Servomotors:
         self.eyeHorizontalTo(speed, xCoord)
         self.eyeVerticalTo(speed, yCoord)
 
-# ANIMAÇÕES
 
-# SIM
+class RightArm(Servomotors):
 
-# NÃO
+    index_finger_GPIO_PIN = 5
+    index_finger_lastPosition = 0
+    index_finger_MIN_ANGLE = 40
+    index_finger_MIDDLE_ANGLE = 80
+    index_finger_MAX_ANGLE = 120
 
-# TALVEZ
+    def __init__(self):
+        super().__init__()
 
-# PESQUISAR MAIS ANIMAÇÕES SIMPLES DE CABEÇAS ROBÓTICAS HUMANOIDES
+    def moveTo(self, servomotor, angle, speed):
+        return super().moveTo(servomotor, angle, speed)
+
+    def fingerClose(self, speed):
+        self.moveTo(self.index_finger_GPIO_PIN, self.index_finger_MAX_ANGLE, speed)
