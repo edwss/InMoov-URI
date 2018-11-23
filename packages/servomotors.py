@@ -4,49 +4,59 @@ import Adafruit_PCA9685
 
 
 class Servomotors:
+
+    # Tamanho mínimo e máximo do pulso do PCA9685
     servo_min = 150  # Min pulse length out of 4096
     servo_max = 600  # Max pulse length out of 4096
 
+    # Constantes do servomotor da boca
     mouth_GPIO_PIN = 0
     mouth_lastPosition = 0
     mouth_MIN_ANGLE = 100
     mouth_MIDDLE_ANGLE = 125
     mouth_MAX_ANGLE = 150
 
+    # Constantes do servomotor da olho horizontal
     eye_horizontal_GPIO_PIN = 1
     eye_horizontal_lastPosition = 0
     eye_horizontal_MIN_ANGLE = 85
     eye_horizontal_MIDDLE_ANGLE = 95
     eye_horizontal_MAX_ANGLE = 120
 
+    # Constantes do servomotor da olho vertical
     eye_vertical_GPIO_PIN = 2
     eye_vertical_lastPosition = 0
     eye_vertical_MIN_ANGLE = 100
     eye_vertical_MIDDLE_ANGLE = 120
     eye_vertical_MAX_ANGLE = 120
 
+    # Constantes do servomotor da cabeça vertical
     head_vertical_GPIO_PIN = 3
     head_vertical_lastPosition = 0
     head_vertical_MIN_ANGLE = 20
     head_vertical_MIDDLE_ANGLE = 80
     head_vertical_MAX_ANGLE = 140
 
+    # Constantes do servomotor da cabeça horizontal
     head_horizontal_GPIO_PIN = 4
     head_horizontal_lastPosition = 0
     head_horizontal_MIN_ANGLE = 40
     head_horizontal_MIDDLE_ANGLE = 85
     head_horizontal_MAX_ANGLE = 130
 
+    # Função que converte valores entre 0 e 180 graus para o correspondente pulso para o PCA9685
     def angleToPulse(self, angle):
         pulse = int((angle - 0) * (self.servo_max - self.servo_min) / (180 - 0) + self.servo_min)
         return pulse
 
+    # Inicialização da classe
     def __init__(self):
         super().__init__()
         print("initialising object")
-        pwm = Adafruit_PCA9685.PCA9685()
-        pwm.set_pwm_freq(60)
+        pwm = Adafruit_PCA9685.PCA9685() # Instanciação do objeto PCA9685
+        pwm.set_pwm_freq(60) # Frequência de comunicação com o barramento - 60Hz
 
+        # Essas funções deixam os servomotores na posição neutra deles (MIDDLE)
         pwm.set_pwm(self.head_vertical_GPIO_PIN, 0, self.angleToPulse(self.head_vertical_MIDDLE_ANGLE))  # Head vertical
         self.head_vertical_lastPosition = self.head_vertical_MIDDLE_ANGLE
         print("Head vertical set to middle!")
@@ -69,8 +79,7 @@ class Servomotors:
 
         print("End initialising!")
 
-    # All servomotors must be set to middle angle when starting and stopping the application
-    # This should be used when starting the InMoov-URI and before turning it off
+    # Essa função deixa os motores na posição neutra, com uma velocidade de entrada
     def neutral(self, speed):
         self.moveTo(self.head_horizontal_GPIO_PIN, self.head_horizontal_MIDDLE_ANGLE, speed)
         self.moveTo(self.head_vertical_GPIO_PIN, self.head_vertical_MIDDLE_ANGLE, speed)
@@ -78,13 +87,17 @@ class Servomotors:
         self.moveTo(self.eye_vertical_GPIO_PIN, self.eye_vertical_MIDDLE_ANGLE, speed)
         self.moveTo(self.mouth_GPIO_PIN, self.mouth_MIDDLE_ANGLE, speed)
 
+    # Função para mover os servomotores dado o pino dele, o ângulo e a velocidade
     def moveTo(self, servomotor, angle, speed):
 
         pwm = Adafruit_PCA9685.PCA9685()
         pwm.set_pwm_freq(60)
 
+        # Cada um dessas condições if é para um servomotor diferente
         if servomotor == self.mouth_GPIO_PIN:
             print("Angle: ", angle, "Min: ", self.mouth_MIN_ANGLE, " Max: ", self.mouth_MAX_ANGLE)
+            # Aqui tem uma checagem do parâmetro ângulo passado a função.
+            # Caso exceda os limites, uma exception é chamada.
             if angle < self.mouth_MIN_ANGLE or angle > self.mouth_MAX_ANGLE:
                 raise Exception("The given angle value is lesser or bigger than servo capabilities!")
             print("Last Position: ", self.mouth_lastPosition)
@@ -188,73 +201,90 @@ class Servomotors:
 
         # pwm.set_pwm(servomotor, 0, self.angleToPulse(angle))
 
+    # Move o eixo vertical da cabeça robótica para cima
     def headUp(self, speed):
         # self.moveTo(self.head_vertical_GPIO_PIN, self.head_vertical_MAX_ANGLE)
         self.moveTo(self.head_vertical_GPIO_PIN, self.head_vertical_MAX_ANGLE, speed)
 
+    # Move o eixo vertical da cabeça robótica para baixo
     def headDown(self, speed):
         # self.moveTo(self.head_vertical_GPIO_PIN, self.head_vertical_MIN_ANGLE)
         self.moveTo(self.head_vertical_GPIO_PIN, self.head_vertical_MIN_ANGLE, speed)
 
+    # Move o eixo horizontal da cabeça robótica para esquerda
     def headLeft(self, speed):
         # self.moveTo(self.head_horizontal_GPIO_PIN, self.head_horizontal_MAX_ANGLE)
         self.moveTo(self.head_horizontal_GPIO_PIN, self.head_horizontal_MAX_ANGLE, speed)
 
+    # Move o eixo horizontal da cabeça robótica para direita
     def headRight(self, speed):
         # self.moveTo(self.head_horizontal_GPIO_PIN, self.head_horizontal_MIN_ANGLE)
         self.moveTo(self.head_horizontal_GPIO_PIN, self.head_horizontal_MIN_ANGLE, speed)
 
+    # Move o eixo vertical dos olhos robótica para cima
     def eyesUp(self, speed):
         # self.moveTo(self.eye_vertical_GPIO_PIN, self.eye_vertical_MIN_ANGLE)
         self.moveTo(self.eye_vertical_GPIO_PIN, self.eye_vertical_MIN_ANGLE, speed)
 
+    # Move o eixo vertical dos olhos robótica para baixo
     def eyesDown(self, speed):
         # self.moveTo(self.eye_vertical_GPIO_PIN, self.eye_vertical_MAX_ANGLE)
         self.moveTo(self.eye_vertical_GPIO_PIN, self.eye_vertical_MAX_ANGLE, speed)
 
+    # Move o eixo horizontal dos olhos robótica para esquerda
     def eyesLeft(self, speed):
         # self.moveTo(self.eye_horizontal_GPIO_PIN, self.eye_horizontal_MAX_ANGLE)
         self.moveTo(self.eye_horizontal_GPIO_PIN, self.eye_horizontal_MAX_ANGLE, speed)
 
+    # Move o eixo horizontal dos olhos robótica para direita
     def eyesRight(self, speed):
         # self.moveTo(self.eye_horizontal_GPIO_PIN, self.eye_horizontal_MIN_ANGLE)
         self.moveTo(self.eye_horizontal_GPIO_PIN, self.eye_horizontal_MIN_ANGLE, speed)
 
+    # Move o eixo vertical da boca robótica para cima (fechando-a)
     def mouthClose(self, speed):
         # self.moveTo(self.mouth_GPIO_PIN, self.mouth_MIN_ANGLE)
         self.moveTo(self.mouth_GPIO_PIN, self.mouth_MIN_ANGLE, speed)
 
+    # Move o eixo vertical da boca robótica para baixo (abrindo-a)
     def mouthOpen(self, speed):
         # self.moveTo(self.mouth_GPIO_PIN, self.mouth_MAX_ANGLE)
         self.moveTo(self.mouth_GPIO_PIN, self.mouth_MAX_ANGLE, speed)
 
+    # Move o eixo horizontal da cabeça robótica para um ângulo definido pelo usuário
     def headHorizontalTo(self, speed, angleTo):
         # self.moveTo(self.head_horizontal_GPIO_PIN, angle)
         self.moveTo(self.head_horizontal_GPIO_PIN, angleTo, speed)
 
+    # Move o eixo vertical da cabeça robótica para um ângulo definido pelo usuário
     def headVerticalTo(self, speed, angleTo):
         # self.moveTo(self.head_vertical_GPIO_PIN, angle)
         self.moveTo(self.head_vertical_GPIO_PIN, angleTo, speed)
 
+    # Move o eixo horizontal dos olhos para um ângulo definido pelo usuário
     def eyeHorizontalTo(self, speed, angleTo):
         # self.moveTo(self.eye_horizontal_GPIO_PIN, angle)
         self.moveTo(self.eye_horizontal_GPIO_PIN, angleTo, speed)
 
+    # Move o eixo vertical dos olhos para um ângulo definido pelo usuário
     def eyeVerticalTo(self, speed, angleTo):
         # self.moveTo(self.eye_vertical_GPIO_PIN, angle)
         self.moveTo(self.eye_vertical_GPIO_PIN, angleTo, speed)
 
-    def mouthTo(self, speed, angleTo):
-        # self.moveTo(self.mouth_GPIO_PIN, angle)
-        for angle in range(self.mouth_lastPosition, angleTo):
-            self.moveTo(self.mouth_GPIO_PIN, angle)
-            self.mouth_lastPosition = angle
-            time.sleep(float(speed))
+    # # Move o eixo vertical da boca para um ângulo definido pelo usuário
+    # def mouthTo(self, speed, angleTo):
+    #     # self.moveTo(self.mouth_GPIO_PIN, angle)
+    #     for angle in range(self.mouth_lastPosition, angleTo):
+    #         self.moveTo(self.mouth_GPIO_PIN, angle)
+    #         self.mouth_lastPosition = angle
+    #         time.sleep(float(speed))
 
+    # Move os eixos vertical e horizontal da cabeça para uma coordenada definida pelo usuário
     def headTo2D(self, speed, xCoord, yCoord):
         self.headHorizontalTo(speed, xCoord)
         self.headVerticalTo(speed, yCoord)
 
+    # Move os eixos vertical e horizontal dos olhos para uma coordenada definida pelo usuário
     def eyesTo2D(self, speed, xCoord, yCoord):
         self.eyeHorizontalTo(speed, xCoord)
         self.eyeVerticalTo(speed, yCoord)

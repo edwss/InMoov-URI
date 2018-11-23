@@ -7,5 +7,5 @@
 from packages.servomotors import Servomotors
 
 servo = Servomotors()
-print(servo.angleToPulse(90))
-servo.headUp()
+servo.headUp(0.05)
+servo.neutral(0.05)
