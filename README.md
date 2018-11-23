@@ -18,6 +18,14 @@ python3 main.py
 ```
 Note que a versão usada do Python é a 3.6!
 
+Exemplos do uso do Framework estão contidos nos arquivos:
+```
+servoTest.py
+speakerTest.py
+test1.py
+test2.py
+```
+
 Os autores deverão ser consultados caso você tenha a intenção de fazer melhorias no código.
 
 
@@ -29,3 +37,4 @@ Os autores deverão ser consultados caso você tenha a intenção de fazer melho
 ##### Outras publicações
 
 >Teixeira, G., Roque, A. S. (2018, Outubro). Robótica Assistiva: Estudo de uma interface humanoide baseada no projeto open source InMoov para interação com deficientes visuais em locais públicos. In: *Anais de resumos do XXIV Seminário Institucional de Iniciação Científica, XXII Seminário de Integração de Pesquisa e Pós-Graduação, XVI Seminário de Extensão.* Frederico Westphalen: URI, 2018.
+Disponível em: <https://goo.gl/n2B6Un>
