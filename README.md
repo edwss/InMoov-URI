@@ -29,7 +29,9 @@ test2.py
 Os autores deverão ser consultados caso você tenha a intenção de fazer melhorias no código.
 
 Contato:
+
 >Gustavo Teixeira: gustavoteixeira at aluno dot santoangelo dot uri dot br
+
 >Alexandre dos Santos Roque: roque at santoangelo dot uri dot br 
 
 
