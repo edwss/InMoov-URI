@@ -28,6 +28,9 @@ test2.py
 
 Os autores deverão ser consultados caso você tenha a intenção de fazer melhorias no código.
 
+Contato:
+>Gustavo Teixeira: gustavoteixeira at aluno dot santoangelo dot uri dot br
+>Alexandre dos Santos Roque: roque at santoangelo dot uri dot br 
 
 
 #### Caso use o Framework para o desenvolvimento de algum trabalho, favor citar os autores:
@@ -37,4 +40,4 @@ Os autores deverão ser consultados caso você tenha a intenção de fazer melho
 ##### Outras publicações
 
 >Teixeira, G., Roque, A. S. (2018, Outubro). Robótica Assistiva: Estudo de uma interface humanoide baseada no projeto open source InMoov para interação com deficientes visuais em locais públicos. In: *Anais de resumos do XXIV Seminário Institucional de Iniciação Científica, XXII Seminário de Integração de Pesquisa e Pós-Graduação, XVI Seminário de Extensão.* Frederico Westphalen: URI, 2018.
-Disponível em: <https://goo.gl/n2B6Un>
+>Disponível em: <https://goo.gl/n2B6Un>
